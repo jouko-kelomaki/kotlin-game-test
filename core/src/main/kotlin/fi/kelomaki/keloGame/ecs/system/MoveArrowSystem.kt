@@ -3,10 +3,6 @@ package fi.kelomaki.keloGame.ecs.system
 import com.badlogic.ashley.core.Entity
 import com.badlogic.ashley.systems.IteratingSystem
 import com.badlogic.gdx.math.Vector2
-import fi.kelomaki.keloGame.ecs.component.GraphicComponent
-import fi.kelomaki.keloGame.ecs.component.MoveArrowBodyComponent
-import fi.kelomaki.keloGame.ecs.component.MoveArrowHeadComponent
-import fi.kelomaki.keloGame.ecs.component.TransformComponent
 import ktx.ashley.allOf
 import ktx.ashley.get
 import ktx.ashley.oneOf
@@ -14,6 +10,7 @@ import ktx.log.debug
 import ktx.log.logger
 import kotlin.math.atan
 import com.badlogic.gdx.Gdx
+import fi.kelomaki.keloGame.ecs.component.*
 import java.lang.Float.min
 import kotlin.math.ceil
 import kotlin.math.pow
@@ -24,7 +21,8 @@ private val LOG = logger<MoveArrowSystem>()
 private val correctVectorFromInput = { Vector2(Gdx.input.x.toFloat(), 480f - Gdx.input.y ) }
 
 
-class MoveArrowSystem() : IteratingSystem(oneOf(MoveArrowHeadComponent::class, MoveArrowBodyComponent::class).get()) {
+class MoveArrowSystem() : IteratingSystem(oneOf(MoveArrowHeadComponent::class,
+    MoveArrowBodyComponent::class, MoveArrowComponent::class).get()) {
     private val target : Vector2 = Vector2(20f, 20f)
     private val distanceFromTarget = 15f
 
@@ -71,5 +69,7 @@ class MoveArrowSystem() : IteratingSystem(oneOf(MoveArrowHeadComponent::class, M
                 // LOG.debug { "head: ${position}, ${rotation}." }
             }
         }
+
+        entity[MoveArrowComponent.mapper]?.run
     }
 }
